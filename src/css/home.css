@@ -10,18 +10,24 @@
     align-items: center;
 }
 
-.home-content .car img{
-    position:absolute;
-    left:0;
+.home-content .car img {
+    position: absolute;
+    left: 0;
     width: 25vw;
     height: auto;
 }
 
-@keyframes moveRight {
-    0% {
-      left: 0;
-    }
-    100% {
-      left: calc(100% - 25vw);
-    }
-  }
+.home-content button {
+    margin: 10vh;
+    width: 8vw;
+    height: 7vh;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px black;
+    background-color: rgb(80, 91, 255);
+    color: white;
+}
+
+.home-content button:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
