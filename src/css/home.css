@@ -1,2 +1,27 @@
-.home-content .car {
+.home-content .cars {
+    display: flex;
+    flex-direction: column;
 }
+
+.home-content .car {
+    position: relative;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+}
+
+.home-content .car img{
+    position:absolute;
+    left:0;
+    width: 25vw;
+    height: auto;
+}
+
+@keyframes moveRight {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: calc(100% - 25vw);
+    }
+  }
