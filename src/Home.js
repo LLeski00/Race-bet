@@ -3,15 +3,17 @@ import "./css/home.css";
 
 const Home = () => {
     const numOfChanges = 0;
-    const numOfCars = 3;
+    const numOfCars = 2;
     const maxLengthOfRace = 5;
     const minLengthOfRace = 3;
-    const lengthOfSection = 75 / (1 + numOfChanges);
+    const lengthOfSection = 73 / (1 + numOfChanges);
     const maxTimeOfSection = maxLengthOfRace / (1 + numOfChanges);
     const minTimeOfSection = minLengthOfRace / (1 + numOfChanges);
     let numOfCarsFinished = 0;
     const [cars, setCars] = useState([]);
     const [winner, setWinner] = useState();
+    const [userBalance, setUserBalance] = useState(100);
+    const [userBet, setUserBet] = useState({ car: "", bet: 0 });
 
     useEffect(() => {
         const temp = Array(numOfCars)
@@ -23,15 +25,33 @@ const Home = () => {
         setCars(temp);
     }, []);
 
+    const handleBetClick = (e) => {
+        let temp = userBet;
+        temp.car = e.target.id;
+        temp.bet += 10;
+        setUserBet(temp);
+        setUserBalance(userBalance - 10);
+    };
+
+    const checkBet = (winner) => {
+        console.log(userBet, winner);
+        if (userBet.car[3] == winner)
+            setUserBalance(userBalance + userBet.bet * numOfCars);
+    };
+
     const checkWinner = () => {
         setTimeout(() => {
             let temp = maxLengthOfRace;
+            let winner = 0;
             for (let i = 0; i < numOfCars; i++) {
                 if (cars[i].time < temp) {
                     temp = cars[i].time;
-                    setWinner(cars[i].id);
+                    winner = cars[i].id;
                 }
             }
+
+            setWinner(winner);
+            checkBet(winner);
         }, maxTimeOfSection * 1000);
     };
 
@@ -72,6 +92,9 @@ const Home = () => {
     return (
         <div className="Home">
             <div className="home-content">
+                <div className="user-balance">
+                    <p>{userBalance} $</p>
+                </div>
                 <div className="cars">
                     {cars &&
                         cars.map((car) => (
@@ -85,6 +108,21 @@ const Home = () => {
                         ))}
                 </div>
                 {winner && <p>Car number {winner} is first!</p>}
+
+                <p>BET ON: </p>
+                <div className="betting">
+                    {cars &&
+                        cars.map((car) => (
+                            <div key={car.id} className="car-bet">
+                                <button
+                                    id={"bet" + car.id}
+                                    onClick={(e) => handleBetClick(e)}
+                                >
+                                    CAR {car.id}
+                                </button>
+                            </div>
+                        ))}
+                </div>
                 <button onClick={() => startRace()}>Start race</button>
             </div>
         </div>

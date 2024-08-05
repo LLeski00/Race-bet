@@ -31,3 +31,8 @@
     cursor: pointer;
     scale: 1.1;
 }
+
+.home-content .betting {
+    display: flex;
+    justify-content: space-between;
+}
