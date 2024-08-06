@@ -1,0 +1,10 @@
+.Bet {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.bets {
+    display: flex;
+    justify-content: space-evenly;
+}

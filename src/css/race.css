@@ -1,0 +1,57 @@
+.Race,
+.race-content {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 25vh;
+}
+
+.race-content .cars {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+}
+
+.race-content .car {
+    position: relative;
+    height: 10vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+}
+
+.race-content .car img {
+    position: absolute;
+    left: 0;
+    width: 15vw;
+    height: auto;
+}
+
+.race-content button {
+    margin: 1vh;
+    width: 8vw;
+    height: 7vh;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px black;
+    background-color: rgb(80, 91, 255);
+    color: white;
+}
+
+.race-content button:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.race-content .balance-change {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.race-content .balance-change p {
+    position: absolute;
+    bottom: 0;
+    opacity: 0%;
+    transition: bottom 2s linear, opacity 1s linear;
+}

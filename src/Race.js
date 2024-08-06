@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import "./css/home.css";
+import { useEffect, useState, useRef } from "react";
+import "./css/race.css";
+import Bet from "./Bet";
+import ControlBar from "./ControlBar";
 
-const Home = () => {
+const Race = () => {
+    const firstUpdate = useRef(true);
     const numOfChanges = 0;
-    const numOfCars = 2;
+    const numOfCars = 3;
     const maxLengthOfRace = 5;
     const minLengthOfRace = 3;
-    const lengthOfSection = 73 / (1 + numOfChanges);
+    const lengthOfSection = 85 / (1 + numOfChanges);
     const maxTimeOfSection = maxLengthOfRace / (1 + numOfChanges);
     const minTimeOfSection = minLengthOfRace / (1 + numOfChanges);
     let numOfCarsFinished = 0;
@@ -14,6 +17,7 @@ const Home = () => {
     const [winner, setWinner] = useState();
     const [userBalance, setUserBalance] = useState(100);
     const [userBet, setUserBet] = useState({ car: "", bet: 0 });
+    const [balanceChange, setBalanceChange] = useState("");
 
     useEffect(() => {
         const temp = Array(numOfCars)
@@ -25,18 +29,51 @@ const Home = () => {
         setCars(temp);
     }, []);
 
-    const handleBetClick = (e) => {
-        let temp = userBet;
-        temp.car = e.target.id;
-        temp.bet += 10;
-        setUserBet(temp);
-        setUserBalance(userBalance - 10);
+    useEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        } else {
+            balanceChangeAnimation();
+        }
+    }, [balanceChange]);
+
+    const balanceChangeAnimation = () => {
+        if (!balanceChange) return;
+
+        setTimeout(() => {
+            const animation =
+                document.getElementsByClassName("balance-change")[0]
+                    .children[0];
+
+            if (Number(balanceChange) > 0) {
+                animation.innerHTML = "+" + balanceChange + "$";
+                animation.style.color = "green";
+            } else if (Number(balanceChange) < 0) {
+                animation.innerHTML = balanceChange + "$";
+                animation.style.color = "red";
+            }
+
+            animation.style.opacity = "100%";
+            animation.style.bottom = "10vh";
+            setTimeout(() => {
+                animation.style.opacity = "0%";
+                setTimeout(() => {
+                    animation.style.bottom = "0vh";
+                }, 1000);
+            }, 1000);
+        }, 500);
     };
 
     const checkBet = (winner) => {
-        console.log(userBet, winner);
-        if (userBet.car[3] == winner)
+        if (userBet.car[3] == winner) {
+            setBalanceChange(userBet.bet * numOfCars);
             setUserBalance(userBalance + userBet.bet * numOfCars);
+        } else {
+            setBalanceChange("-" + userBet.bet);
+        }
+
+        setUserBet({ car: "", bet: 0 });
     };
 
     const checkWinner = () => {
@@ -65,8 +102,8 @@ const Home = () => {
         let time =
             Math.random() * (maxTimeOfSection - minTimeOfSection) +
             minTimeOfSection;
-        if (iteration === 0) car.time = time;
-        else car.time += time;
+
+        car.time += time;
         car.style.transition = `left ${time}s linear`;
         car.style.left = lengthOfSection * (iteration + 1) + "vw";
 
@@ -77,24 +114,23 @@ const Home = () => {
         } else {
             numOfCarsFinished++;
             updateCar(car);
-            console.log(car.id + ": " + car.time);
             if (numOfCarsFinished === numOfCars) checkWinner();
         }
     };
 
-    const startRace = () => {
-        let cars = document.getElementsByClassName("car");
-        for (let i = 0; i < cars.length; i++) {
-            setSpeed(cars[i].children[0], 0);
-        }
-    };
-
     return (
-        <div className="Home">
-            <div className="home-content">
-                <div className="user-balance">
-                    <p>{userBalance} $</p>
-                </div>
+        <div className="Race">
+            <div className="race-content">
+                {cars && (
+                    <Bet
+                        cars={cars}
+                        userBalance={userBalance}
+                        userBet={userBet}
+                        setUserBalance={setUserBalance}
+                        setUserBet={setUserBet}
+                    />
+                )}
+
                 <div className="cars">
                     {cars &&
                         cars.map((car) => (
@@ -109,24 +145,17 @@ const Home = () => {
                 </div>
                 {winner && <p>Car number {winner} is first!</p>}
 
-                <p>BET ON: </p>
-                <div className="betting">
-                    {cars &&
-                        cars.map((car) => (
-                            <div key={car.id} className="car-bet">
-                                <button
-                                    id={"bet" + car.id}
-                                    onClick={(e) => handleBetClick(e)}
-                                >
-                                    CAR {car.id}
-                                </button>
-                            </div>
-                        ))}
+                <div className="balance-change">
+                    <p>aaa</p>
                 </div>
-                <button onClick={() => startRace()}>Start race</button>
+
+                <ControlBar
+                    setSpeed={setSpeed}
+                    maxLengthOfRace={maxLengthOfRace}
+                />
             </div>
         </div>
     );
 };
 
-export default Home;
+export default Race;

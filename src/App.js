@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "./Home";
+import Race from "./Race";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
             <Router>
                 <div className="app-content">
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Race />} />
                     </Routes>
                 </div>
             </Router>

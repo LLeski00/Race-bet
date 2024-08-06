@@ -1,0 +1,23 @@
+.ControlBar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.control-bar-content {
+    display: flex;
+}
+
+.control-bar-content #start-race-button {
+    background-color: rgb(0, 151, 88);
+    width: 100%;
+}
+
+.control-bar-content #reset-race-button {
+    background-color: rgb(167, 164, 0);
+    width: 100%;
+}
+
+.control-bar-content button:disabled {
+    opacity: 50%;
+}
