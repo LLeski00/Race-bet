@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import "./css/race.css";
 import Bet from "./Bet";
 import ControlBar from "./ControlBar";
 
 const Race = () => {
-    const firstUpdate = useRef(true);
-    const numOfChanges = 0;
+    const numOfChanges = 5;
     const numOfCars = 3;
     const maxLengthOfRace = 5;
     const minLengthOfRace = 3;
@@ -29,48 +28,12 @@ const Race = () => {
         setCars(temp);
     }, []);
 
-    useEffect(() => {
-        if (firstUpdate.current) {
-            firstUpdate.current = false;
-            return;
-        } else {
-            balanceChangeAnimation();
-        }
-    }, [balanceChange]);
-
-    const balanceChangeAnimation = () => {
-        if (!balanceChange) return;
-
-        setTimeout(() => {
-            const animation =
-                document.getElementsByClassName("balance-change")[0]
-                    .children[0];
-
-            if (Number(balanceChange) > 0) {
-                animation.innerHTML = "+" + balanceChange + "$";
-                animation.style.color = "green";
-            } else if (Number(balanceChange) < 0) {
-                animation.innerHTML = balanceChange + "$";
-                animation.style.color = "red";
-            }
-
-            animation.style.opacity = "100%";
-            animation.style.bottom = "10vh";
-            setTimeout(() => {
-                animation.style.opacity = "0%";
-                setTimeout(() => {
-                    animation.style.bottom = "0vh";
-                }, 1000);
-            }, 1000);
-        }, 500);
-    };
-
     const checkBet = (winner) => {
         if (userBet.car[3] == winner) {
             setBalanceChange(userBet.bet * numOfCars);
             setUserBalance(userBalance + userBet.bet * numOfCars);
         } else {
-            setBalanceChange("-" + userBet.bet);
+            setBalanceChange(userBet.bet * -1);
         }
 
         setUserBet({ car: "", bet: 0 });
@@ -128,6 +91,7 @@ const Race = () => {
                         userBet={userBet}
                         setUserBalance={setUserBalance}
                         setUserBet={setUserBet}
+                        balanceChange={balanceChange}
                     />
                 )}
 
@@ -145,13 +109,11 @@ const Race = () => {
                 </div>
                 {winner && <p>Car number {winner} is first!</p>}
 
-                <div className="balance-change">
-                    <p>aaa</p>
-                </div>
-
                 <ControlBar
                     setSpeed={setSpeed}
+                    maxTimeOfSection={maxTimeOfSection}
                     maxLengthOfRace={maxLengthOfRace}
+                    setWinner={setWinner}
                 />
             </div>
         </div>

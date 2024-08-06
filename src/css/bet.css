@@ -4,7 +4,31 @@
     width: 100%;
 }
 
+.sizes-of-bet {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .bets {
     display: flex;
     justify-content: space-evenly;
+}
+
+.balance-change {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.balance-change p {
+    position: absolute;
+    bottom: -10vw;
+    right: 2vw;
+    opacity: 0%;
+    transition: bottom 2s linear, opacity 1s linear;
+}
+
+.user-balance {
+    text-align: end;
+    padding-right: 2vw;
 }

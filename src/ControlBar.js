@@ -1,10 +1,16 @@
 import { useState } from "react";
 import "./css/controlBar.css";
 
-const ControlBar = ({ maxLengthOfRace, setSpeed }) => {
+const ControlBar = ({
+    maxTimeOfSection,
+    maxLengthOfRace,
+    setSpeed,
+    setWinner,
+}) => {
     const [carsMoving, setCarsMoving] = useState(false);
 
     const resetRace = (e) => {
+        setWinner(null);
         setCarsMoving(true);
         let cars = document.getElementsByClassName("car");
         for (let i = 0; i < cars.length; i++) {
@@ -13,7 +19,7 @@ const ControlBar = ({ maxLengthOfRace, setSpeed }) => {
 
         setTimeout(() => {
             setCarsMoving(false);
-        }, maxLengthOfRace * 1000);
+        }, maxTimeOfSection * 1000);
     };
 
     const startRace = (e) => {
