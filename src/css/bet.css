@@ -4,14 +4,39 @@
     width: 100%;
 }
 
+.bet-content {
+    height: 100%;
+    width: 100%;
+}
+
 .sizes-of-bet {
     display: flex;
     justify-content: space-evenly;
 }
 
-.bets {
+.bet-size {
+    display: flex;
+    justify-content: center;
+}
+
+.sizes-of-bet button {
+    width: 100%;
+    font-size: 2vw;
+}
+
+.car-bets {
     display: flex;
     justify-content: space-evenly;
+}
+
+.car-bet {
+    display: flex;
+    justify-content: center;
+}
+
+.car-bets button {
+    width: 100%;
+    font-size: 2vw;
 }
 
 .balance-change {

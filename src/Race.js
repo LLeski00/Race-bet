@@ -30,13 +30,12 @@ const Race = () => {
 
     const checkBet = (winner) => {
         if (userBet.car[3] == winner) {
-            setBalanceChange(userBet.bet * numOfCars);
-            setUserBalance(userBalance + userBet.bet * numOfCars);
+            setBalanceChange(userBet.bet * numOfCars - userBet.bet);
+            setUserBalance(userBalance - userBet.bet + userBet.bet * numOfCars);
         } else {
             setBalanceChange(userBet.bet * -1);
+            setUserBalance(userBalance - userBet.bet);
         }
-
-        setUserBet({ car: "", bet: 0 });
     };
 
     const checkWinner = () => {
@@ -89,7 +88,6 @@ const Race = () => {
                         cars={cars}
                         userBalance={userBalance}
                         userBet={userBet}
-                        setUserBalance={setUserBalance}
                         setUserBet={setUserBet}
                         balanceChange={balanceChange}
                     />

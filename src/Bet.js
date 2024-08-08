@@ -1,17 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import "./css/bet.css";
 
-const Bet = ({
-    cars,
-    userBalance,
-    userBet,
-    setUserBalance,
-    setUserBet,
-    balanceChange,
-}) => {
+const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
     const firstUpdate = useRef(true);
-    const [sizesOfBet, setSizesOfBet] = useState([10, 20, 50, 100]);
-    const [betSize, setBetSize] = useState(10);
+    const sizesOfBet = [10, 20, 50, 100];
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -26,6 +18,12 @@ const Bet = ({
         const sizes = document.getElementsByClassName("bet-size");
         for (let i = 0; i < sizesOfBet.length; i++)
             sizes[i].children[0].style.opacity = "100%";
+    };
+
+    const unclickCarBet = () => {
+        const carBets = document.getElementsByClassName("car-bet");
+        for (let i = 0; i < cars.length; i++)
+            carBets[i].children[0].style.opacity = "100%";
     };
 
     const balanceChangeAnimation = () => {
@@ -56,18 +54,21 @@ const Bet = ({
     };
 
     const handleBetSizeClick = (e) => {
-        setBetSize(Number(e.target.id.slice(8)));
+        let temp = userBet;
+        temp.car = userBet.car;
+        temp.bet = Number(e.target.id.slice(8));
+        setUserBet(temp);
         unclickSizesofBet();
         e.target.style.opacity = "50%";
-        console.log(e.target.id.slice(8));
     };
 
-    const handleBetClick = (e) => {
+    const handleCarBetClick = (e) => {
         let temp = userBet;
         temp.car = e.target.id;
-        temp.bet += betSize;
+        temp.bet = userBet.bet;
         setUserBet(temp);
-        setUserBalance(userBalance - betSize);
+        unclickCarBet();
+        e.target.style.opacity = "50%";
     };
 
     return (
@@ -97,13 +98,13 @@ const Bet = ({
                 </div>
 
                 <p>BET ON: </p>
-                <div className="bets">
+                <div className="car-bets">
                     {cars &&
                         cars.map((car) => (
                             <div key={car.id} className="car-bet">
                                 <button
                                     id={"bet" + car.id}
-                                    onClick={(e) => handleBetClick(e)}
+                                    onClick={(e) => handleCarBetClick(e)}
                                 >
                                     CAR {car.id}
                                 </button>
