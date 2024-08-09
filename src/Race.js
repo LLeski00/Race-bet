@@ -14,7 +14,7 @@ const Race = () => {
     let numOfCarsFinished = 0;
     const [cars, setCars] = useState([]);
     const [winner, setWinner] = useState();
-    const [userBalance, setUserBalance] = useState(100);
+    const [userBalance, setUserBalance] = useState(200);
     const [userBet, setUserBet] = useState({ car: "", bet: 0 });
     const [balanceChange, setBalanceChange] = useState("");
 
@@ -29,13 +29,16 @@ const Race = () => {
     }, []);
 
     const checkBet = (winner) => {
-        if (userBet.car[3] == winner) {
+        if (Number(userBet.car[3]) === winner) {
             setBalanceChange(userBet.bet * numOfCars - userBet.bet);
             setUserBalance(userBalance - userBet.bet + userBet.bet * numOfCars);
         } else {
             setBalanceChange(userBet.bet * -1);
             setUserBalance(userBalance - userBet.bet);
         }
+
+        setWinner(null);
+        setUserBet({ car: "", bet: 0 });
     };
 
     const checkWinner = () => {

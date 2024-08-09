@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./css/bet.css";
 
 const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
     const firstUpdate = useRef(true);
-    const sizesOfBet = [10, 20, 50, 100];
+    const sizesOfBet = [10, 20, 50, 100, 200];
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -11,8 +11,29 @@ const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
             return;
         } else {
             balanceChangeAnimation();
+            setPossibleBets();
+            unclickCarBet();
+            unclickSizesofBet();
         }
-    }, [balanceChange]);
+    }, [userBalance]);
+
+    const setPossibleBets = () => {
+        if (userBalance < sizesOfBet[0]) {
+            alert("YOU LOST!");
+        }
+
+        const sizes = document.getElementsByClassName("bet-size");
+        for (let i = 0; i < sizesOfBet.length; i++) {
+            if (userBalance < Number(sizes[i].children[0].id.slice(8))) {
+                sizes[i].children[0].disabled = true;
+                sizes[i].children[0].style.backgroundColor =
+                    "rgba(255, 0, 0, 0.479)";
+            } else {
+                sizes[i].children[0].disabled = false;
+                sizes[i].children[0].style.backgroundColor = "rgb(80, 91, 255)";
+            }
+        }
+    };
 
     const unclickSizesofBet = () => {
         const sizes = document.getElementsByClassName("bet-size");
