@@ -1,0 +1,19 @@
+.sizes-of-bet {
+    display: flex;
+    justify-content: space-evenly;
+    flex-shrink: 0;
+}
+
+.bet-size {
+    display: flex;
+    justify-content: center;
+}
+
+.sizes-of-bet button {
+    width: 7.5vw;
+    box-sizing: border-box;
+}
+
+.sizes-of-bet button:disabled:hover {
+    scale: 1;
+}

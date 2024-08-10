@@ -1,0 +1,15 @@
+.car-bets {
+    display: flex;
+    justify-content: space-evenly;
+    flex-shrink: 0;
+}
+
+.car-bet {
+    display: flex;
+    justify-content: center;
+}
+
+.car-bets button {
+    width: 7.5vw;
+    box-sizing: border-box;
+}

@@ -1,9 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./css/bet.css";
+import TryAgainPopup from "./TryAgainPopup";
+import CarBets from "./CarBets";
+import BetSizes from "./BetSizes";
 
 const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
     const firstUpdate = useRef(true);
     const sizesOfBet = [10, 20, 50, 100, 200];
+    const [popup, setPopup] = useState(false);
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -19,7 +23,7 @@ const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
 
     const setPossibleBets = () => {
         if (userBalance < sizesOfBet[0]) {
-            alert("YOU LOST!");
+            setPopup(true);
         }
 
         const sizes = document.getElementsByClassName("bet-size");
@@ -50,46 +54,25 @@ const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
     const balanceChangeAnimation = () => {
         if (!balanceChange) return;
 
+        const animation =
+            document.getElementsByClassName("balance-change")[0].children[0];
+
+        if (Number(balanceChange) > 0) {
+            animation.innerHTML = "+" + balanceChange + "$";
+            animation.style.color = "green";
+        } else if (Number(balanceChange) < 0) {
+            animation.innerHTML = balanceChange + "$";
+            animation.style.color = "red";
+        }
+
+        animation.style.opacity = "100%";
+        animation.style.bottom = "0vh";
         setTimeout(() => {
-            const animation =
-                document.getElementsByClassName("balance-change")[0]
-                    .children[0];
-
-            if (Number(balanceChange) > 0) {
-                animation.innerHTML = "+" + balanceChange + "$";
-                animation.style.color = "green";
-            } else if (Number(balanceChange) < 0) {
-                animation.innerHTML = balanceChange + "$";
-                animation.style.color = "red";
-            }
-
-            animation.style.opacity = "100%";
-            animation.style.bottom = "0vh";
+            animation.style.opacity = "0%";
             setTimeout(() => {
-                animation.style.opacity = "0%";
-                setTimeout(() => {
-                    animation.style.bottom = "-5vh";
-                }, 1000);
+                animation.style.bottom = "-5vh";
             }, 1000);
-        }, 500);
-    };
-
-    const handleBetSizeClick = (e) => {
-        let temp = userBet;
-        temp.car = userBet.car;
-        temp.bet = Number(e.target.id.slice(8));
-        setUserBet(temp);
-        unclickSizesofBet();
-        e.target.style.opacity = "50%";
-    };
-
-    const handleCarBetClick = (e) => {
-        let temp = userBet;
-        temp.car = e.target.id;
-        temp.bet = userBet.bet;
-        setUserBet(temp);
-        unclickCarBet();
-        e.target.style.opacity = "50%";
+        }, 1000);
     };
 
     return (
@@ -104,34 +87,22 @@ const Bet = ({ cars, userBalance, userBet, setUserBet, balanceChange }) => {
                 </div>
 
                 <p>SIZE OF BET: </p>
-                <div className="sizes-of-bet">
-                    {sizesOfBet &&
-                        sizesOfBet.map((bet) => (
-                            <div key={bet} className="bet-size">
-                                <button
-                                    id={"bet-size" + bet}
-                                    onClick={(e) => handleBetSizeClick(e)}
-                                >
-                                    {bet}$
-                                </button>
-                            </div>
-                        ))}
-                </div>
+                <BetSizes
+                    userBet={userBet}
+                    setUserBet={setUserBet}
+                    unclickSizesofBet={unclickSizesofBet}
+                    sizesOfBet={sizesOfBet}
+                />
 
                 <p>BET ON: </p>
-                <div className="car-bets">
-                    {cars &&
-                        cars.map((car) => (
-                            <div key={car.id} className="car-bet">
-                                <button
-                                    id={"bet" + car.id}
-                                    onClick={(e) => handleCarBetClick(e)}
-                                >
-                                    CAR {car.id}
-                                </button>
-                            </div>
-                        ))}
-                </div>
+                <CarBets
+                    cars={cars}
+                    userBet={userBet}
+                    setUserBet={setUserBet}
+                    unclickCarBet={unclickCarBet}
+                />
+
+                {popup && <TryAgainPopup />}
             </div>
         </div>
     );

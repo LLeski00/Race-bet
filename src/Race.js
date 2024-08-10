@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import "./css/race.css";
 import Bet from "./Bet";
 import ControlBar from "./ControlBar";
+import Cars from "./Cars";
 
 const Race = () => {
     const numOfChanges = 5;
     const numOfCars = 3;
-    const maxLengthOfRace = 5;
+    const maxLengthOfRace = 4;
     const minLengthOfRace = 3;
     const lengthOfSection = 85 / (1 + numOfChanges);
     const maxTimeOfSection = maxLengthOfRace / (1 + numOfChanges);
@@ -37,7 +38,6 @@ const Race = () => {
             setUserBalance(userBalance - userBet.bet);
         }
 
-        setWinner(null);
         setUserBet({ car: "", bet: 0 });
     };
 
@@ -57,32 +57,6 @@ const Race = () => {
         }, maxTimeOfSection * 1000);
     };
 
-    const updateCar = (car) => {
-        let temp = [...cars];
-        temp[car.id - 1].time = car.time;
-        setCars(temp);
-    };
-
-    const setSpeed = (car, iteration) => {
-        let time =
-            Math.random() * (maxTimeOfSection - minTimeOfSection) +
-            minTimeOfSection;
-
-        car.time += time;
-        car.style.transition = `left ${time}s linear`;
-        car.style.left = lengthOfSection * (iteration + 1) + "vw";
-
-        if (iteration < numOfChanges) {
-            setTimeout(() => {
-                setSpeed(car, iteration + 1);
-            }, time * 1000);
-        } else {
-            numOfCarsFinished++;
-            updateCar(car);
-            if (numOfCarsFinished === numOfCars) checkWinner();
-        }
-    };
-
     return (
         <div className="Race">
             <div className="race-content">
@@ -96,25 +70,21 @@ const Race = () => {
                     />
                 )}
 
-                <div className="cars">
-                    {cars &&
-                        cars.map((car) => (
-                            <div key={car.id} className="car">
-                                <img
-                                    id={car.id}
-                                    src="./images/RacerCar.png"
-                                    alt="car"
-                                ></img>
-                            </div>
-                        ))}
-                </div>
+                {cars && <Cars cars={cars} />}
                 {winner && <p>Car number {winner} is first!</p>}
 
                 <ControlBar
-                    setSpeed={setSpeed}
+                    cars={cars}
+                    setCars={setCars}
+                    minTimeOfSection={minTimeOfSection}
                     maxTimeOfSection={maxTimeOfSection}
                     maxLengthOfRace={maxLengthOfRace}
                     setWinner={setWinner}
+                    lengthOfSection={lengthOfSection}
+                    numOfChanges={numOfChanges}
+                    numOfCarsFinished={numOfCarsFinished}
+                    numOfCars={numOfCars}
+                    checkWinner={checkWinner}
                 />
             </div>
         </div>

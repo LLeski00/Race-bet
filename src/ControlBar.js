@@ -2,20 +2,53 @@ import { useState } from "react";
 import "./css/controlBar.css";
 
 const ControlBar = ({
+    cars,
+    setCars,
+    minTimeOfSection,
     maxTimeOfSection,
     maxLengthOfRace,
-    setSpeed,
     setWinner,
+    lengthOfSection,
+    numOfChanges,
+    numOfCarsFinished,
+    numOfCars,
+    checkWinner,
 }) => {
     const [carsRacing, setCarsRacing] = useState(false);
     const [carsRestarting, setCarsRestarting] = useState(true);
+
+    const updateCar = (car) => {
+        let temp = [...cars];
+        temp[car.id - 1].time = car.time;
+        setCars(temp);
+    };
+
+    const setSpeed = (car, iteration) => {
+        let time =
+            Math.random() * (maxTimeOfSection - minTimeOfSection) +
+            minTimeOfSection;
+
+        car.time += time;
+        car.style.transition = `left ${time}s linear`;
+        car.style.left = lengthOfSection * (iteration + 1) + "vw";
+
+        if (iteration < numOfChanges) {
+            setTimeout(() => {
+                setSpeed(car, iteration + 1);
+            }, time * 1000);
+        } else {
+            numOfCarsFinished++;
+            updateCar(car);
+            if (numOfCarsFinished === numOfCars) checkWinner();
+        }
+    };
 
     const resetRace = (e) => {
         setCarsRestarting(true);
         setWinner(null);
         let cars = document.getElementsByClassName("car");
         for (let i = 0; i < cars.length; i++) {
-            cars[i].children[0].style.left = "0";
+            cars[i].children[2].style.left = "0";
         }
 
         setTimeout(() => {
@@ -29,8 +62,8 @@ const ControlBar = ({
 
         let cars = document.getElementsByClassName("car");
         for (let i = 0; i < cars.length; i++) {
-            cars[i].children[0].time = 0;
-            setSpeed(cars[i].children[0], 0);
+            cars[i].children[2].time = 0;
+            setSpeed(cars[i].children[2], 0);
         }
 
         setTimeout(() => {

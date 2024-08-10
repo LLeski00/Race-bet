@@ -13,42 +13,7 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-}
-
-.sizes-of-bet {
-    display: flex;
-    justify-content: space-evenly;
-    flex-shrink: 0;
-}
-
-.bet-size {
-    display: flex;
-    justify-content: center;
-}
-
-.sizes-of-bet button {
-    width: 7.5vw;
-    box-sizing: border-box;
-}
-
-.sizes-of-bet button:disabled:hover {
-    scale: 1;
-}
-
-.car-bets {
-    display: flex;
-    justify-content: space-evenly;
-    flex-shrink: 0;
-}
-
-.car-bet {
-    display: flex;
-    justify-content: center;
-}
-
-.car-bets button {
-    width: 7.5vw;
-    box-sizing: border-box;
+    background-color: rgb(18, 18, 18);
 }
 
 .balance-change {
@@ -61,7 +26,7 @@
 
 .balance-change p {
     position: absolute;
-    bottom: -10vw;
+    bottom: -5vh;
     right: 2vw;
     opacity: 0%;
     transition: bottom 2s linear, opacity 1s linear;

@@ -1,0 +1,55 @@
+.popup {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.popup-content {
+    visibility: hidden;
+    font-size: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    text-align: center;
+    background-color: brown;
+    border-radius: 100px;
+    box-shadow: 20px 20px 20px black;
+    opacity: 100%;
+}
+
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+.popup-content p {
+    margin-bottom: 20vh;
+}
+
+.popup-content button {
+    width: 80%;
+    background-color: rgb(167, 164, 0);
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

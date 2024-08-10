@@ -14,30 +14,6 @@
     width: 100%;
 }
 
-.race-content .cars {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: 100vw;
-}
-
-.race-content .car {
-    position: relative;
-    height: 100%;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-}
-
-.race-content .car img {
-    position: absolute;
-    left: 0;
-    max-width: 100%;
-    max-height: 100%;
-    width: 15vw;
-    height: auto;
-}
-
 .race-content button {
     margin: 1vh;
     width: 8vw;
