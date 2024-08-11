@@ -1,0 +1,80 @@
+.Home {
+    height: 100vh;
+    width: 100vw;
+}
+
+.home-content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-content button {
+    margin: 1vh;
+    width: 8vw;
+    height: 7vh;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px black;
+    background-color: rgb(80, 91, 255);
+    color: white;
+    font-size: 1vw;
+}
+
+.home-content button:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.num-of-cars-opt {
+    display: flex;
+    justify-content: space-around;
+}
+
+.speed-opts {
+    display: flex;
+    justify-content: space-around;
+}
+
+.speed-opts button {
+    width: 100%;
+}
+
+.num-of-changes-opts {
+    display: flex;
+    justify-content: space-around;
+}
+
+.start-game-button {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.start-game-button button {
+    width: 100%;
+    background-color: rgb(0, 151, 88);
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

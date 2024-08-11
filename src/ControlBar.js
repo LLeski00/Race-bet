@@ -4,15 +4,10 @@ import "./css/controlBar.css";
 const ControlBar = ({
     cars,
     setCars,
-    minTimeOfSection,
-    maxTimeOfSection,
-    maxLengthOfRace,
     setWinner,
-    lengthOfSection,
-    numOfChanges,
     numOfCarsFinished,
-    numOfCars,
     checkWinner,
+    raceSettings,
 }) => {
     const [carsRacing, setCarsRacing] = useState(false);
     const [carsRestarting, setCarsRestarting] = useState(true);
@@ -25,21 +20,23 @@ const ControlBar = ({
 
     const setSpeed = (car, iteration) => {
         let time =
-            Math.random() * (maxTimeOfSection - minTimeOfSection) +
-            minTimeOfSection;
+            Math.random() *
+                (raceSettings.maxTimeOfSection -
+                    raceSettings.minTimeOfSection) +
+            raceSettings.minTimeOfSection;
 
         car.time += time;
         car.style.transition = `left ${time}s linear`;
-        car.style.left = lengthOfSection * (iteration + 1) + "vw";
+        car.style.left = raceSettings.lengthOfSection * (iteration + 1) + "vw";
 
-        if (iteration < numOfChanges) {
+        if (iteration < raceSettings.numOfChanges) {
             setTimeout(() => {
                 setSpeed(car, iteration + 1);
             }, time * 1000);
         } else {
             numOfCarsFinished++;
             updateCar(car);
-            if (numOfCarsFinished === numOfCars) checkWinner();
+            if (numOfCarsFinished === raceSettings.numOfCars) checkWinner();
         }
     };
 
@@ -53,7 +50,7 @@ const ControlBar = ({
 
         setTimeout(() => {
             setCarsRacing(false);
-        }, maxTimeOfSection * 1000);
+        }, raceSettings.maxTimeOfSection * 1000);
     };
 
     const startRace = (e) => {
@@ -68,7 +65,7 @@ const ControlBar = ({
 
         setTimeout(() => {
             setCarsRestarting(false);
-        }, maxLengthOfRace * 1000);
+        }, raceSettings.maxLengthOfRace * 1000);
     };
 
     return (

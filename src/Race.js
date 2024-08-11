@@ -3,15 +3,11 @@ import "./css/race.css";
 import Bet from "./Bet";
 import ControlBar from "./ControlBar";
 import Cars from "./Cars";
+import { useParams } from "react-router-dom";
 
 const Race = () => {
-    const numOfChanges = 5;
-    const numOfCars = 3;
-    const maxLengthOfRace = 4;
-    const minLengthOfRace = 3;
-    const lengthOfSection = 85 / (1 + numOfChanges);
-    const maxTimeOfSection = maxLengthOfRace / (1 + numOfChanges);
-    const minTimeOfSection = minLengthOfRace / (1 + numOfChanges);
+    let { raceInfo } = useParams();
+    const [raceSettings, setRaceSettings] = useState();
     let numOfCarsFinished = 0;
     const [cars, setCars] = useState([]);
     const [winner, setWinner] = useState();
@@ -20,19 +16,52 @@ const Race = () => {
     const [balanceChange, setBalanceChange] = useState("");
 
     useEffect(() => {
-        const temp = Array(numOfCars)
+        console.log(raceInfo);
+        setRaceUp();
+    }, []);
+
+    const setRaceUp = () => {
+        let settings = {};
+        console.log(raceInfo);
+        settings.numOfCars = Number(
+            raceInfo.substring(0, raceInfo.indexOf("x"))
+        );
+        raceInfo = raceInfo.slice(raceInfo.indexOf("x") + 1);
+        settings.minLengthOfRace = Number(
+            raceInfo.substring(0, raceInfo.indexOf("x"))
+        );
+        raceInfo = raceInfo.slice(raceInfo.indexOf("x") + 1);
+        settings.maxLengthOfRace = Number(
+            raceInfo.substring(0, raceInfo.indexOf("x"))
+        );
+        raceInfo = raceInfo.slice(raceInfo.indexOf("x") + 1);
+        settings.numOfChanges = Number(raceInfo);
+        settings.lengthOfSection = 85 / (1 + settings.numOfChanges);
+        settings.maxTimeOfSection =
+            settings.maxLengthOfRace / (1 + settings.numOfChanges);
+        settings.minTimeOfSection =
+            settings.minLengthOfRace / (1 + settings.numOfChanges);
+
+        console.log(settings);
+
+        const temp = Array(settings.numOfCars)
             .fill()
             .map((_, index) => ({
                 id: index + 1,
                 time: 0,
             }));
         setCars(temp);
-    }, []);
+        setRaceSettings(settings);
+    };
 
     const checkBet = (winner) => {
         if (Number(userBet.car[3]) === winner) {
-            setBalanceChange(userBet.bet * numOfCars - userBet.bet);
-            setUserBalance(userBalance - userBet.bet + userBet.bet * numOfCars);
+            setBalanceChange(
+                userBet.bet * raceSettings.numOfCars - userBet.bet
+            );
+            setUserBalance(
+                userBalance - userBet.bet + userBet.bet * raceSettings.numOfCars
+            );
         } else {
             setBalanceChange(userBet.bet * -1);
             setUserBalance(userBalance - userBet.bet);
@@ -43,9 +72,9 @@ const Race = () => {
 
     const checkWinner = () => {
         setTimeout(() => {
-            let temp = maxLengthOfRace;
+            let temp = raceSettings.maxLengthOfRace;
             let winner = 0;
-            for (let i = 0; i < numOfCars; i++) {
+            for (let i = 0; i < raceSettings.numOfCars; i++) {
                 if (cars[i].time < temp) {
                     temp = cars[i].time;
                     winner = cars[i].id;
@@ -54,7 +83,7 @@ const Race = () => {
 
             setWinner(winner);
             checkBet(winner);
-        }, maxTimeOfSection * 1000);
+        }, raceSettings.maxTimeOfSection * 1000);
     };
 
     return (
@@ -76,15 +105,10 @@ const Race = () => {
                 <ControlBar
                     cars={cars}
                     setCars={setCars}
-                    minTimeOfSection={minTimeOfSection}
-                    maxTimeOfSection={maxTimeOfSection}
-                    maxLengthOfRace={maxLengthOfRace}
                     setWinner={setWinner}
-                    lengthOfSection={lengthOfSection}
-                    numOfChanges={numOfChanges}
                     numOfCarsFinished={numOfCarsFinished}
-                    numOfCars={numOfCars}
                     checkWinner={checkWinner}
+                    raceSettings={raceSettings}
                 />
             </div>
         </div>
